@@ -140,6 +140,7 @@ The backend writes structured JSON logs for server lifecycle events and complete
 | `subtract` | 2 to 20 | `[10, 3, 2]` → `5` |
 | `multiply` | 2 to 20 | `[2, 3, 4]` → `24` |
 | `divide` | exactly 2 | `[42, 6]` → `7` |
+| `percentage` | exactly 2 | `[200, 15]` → `30` (`200 × 15 / 100`) |
 
 The API accepts JSON decimal numbers only. Use an optional leading minus sign and a period as the decimal separator:
 
@@ -201,7 +202,7 @@ CalculationStrategyResolver output port
         ↓
 InMemoryCalculationStrategyRegistry
         ↓
-AdditionStrategy / SubtractionStrategy / MultiplicationStrategy / DivisionStrategy
+AdditionStrategy / SubtractionStrategy / MultiplicationStrategy / DivisionStrategy / PercentageStrategy
 ```
 
 - Each operation is an independent `CalculationStrategy`.
@@ -209,4 +210,24 @@ AdditionStrategy / SubtractionStrategy / MultiplicationStrategy / DivisionStrate
 - The HTTP adapter depends only on `CalculateUseCase`.
 - The backend is the source of truth for business rules and validation; the frontend mirrors input rules only to provide faster feedback.
 - The Docker setup uses a multi-stage Go build and an Nginx runtime that proxies browser API requests to the backend container.
-- No external Go dependencies, database, framework, remote repository, or commit have been created for this project.
+- No external Go dependencies, database, or framework are required.
+
+### Why this architecture fits the project
+
+The architecture separates transport concerns from calculation rules without introducing framework or deployment complexity that the assignment does not need.
+
+| Benefit | How it is achieved | Practical result |
+| --- | --- | --- |
+| Clear responsibilities | HTTP concerns stay in the inbound adapter; calculation rules stay in the application and domain layers. | Validation, status codes, and arithmetic can change independently. |
+| Testability | The use case depends on the small `CalculationStrategyResolver` abstraction rather than a concrete registry. | Domain and application tests run without an HTTP server, while adapters are tested separately with `httptest`. |
+| Safe extension | Each operation is a separate `CalculationStrategy` registered through the resolver. | A future operation can be added with a focused implementation and tests, without modifying existing strategies. |
+| Backend authority | The frontend calls the API for every result; it only mirrors validation for fast feedback. | Direct API clients and the UI follow the same calculation rules. |
+| Proportionate complexity | Ports are used only at meaningful boundaries, with the Go standard library and an in-memory registry. | The code demonstrates SOLID principles without a dependency-injection framework, database, or unnecessary layers. |
+
+### Alternatives considered
+
+- **A single HTTP handler containing parsing, validation, and arithmetic** would be shorter initially, but would couple transport details to business rules and make focused tests and future operations harder to maintain.
+- **A framework-heavy clean architecture** with many ports, adapters, factories, and a dependency-injection container would add ceremony without a database, message broker, or multiple infrastructure implementations to justify it.
+- **Multiple microservices** would add network and deployment overhead without an independent business capability that needs separate scaling or ownership.
+
+For this calculator, a lightweight hexagonal design is the balanced option: clearer and more extensible than a monolithic handler, while remaining simpler than architecture intended for a much larger system.

@@ -21,6 +21,7 @@ const operationLabels: Record<CalculatorOperation, string> = {
   subtract: 'Subtraction',
   multiply: 'Multiplication',
   divide: 'Division',
+  percentage: 'Percentage',
 }
 
 export function CalculatorForm({

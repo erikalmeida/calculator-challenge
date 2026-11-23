@@ -5,6 +5,7 @@ import {
   MAX_OPERANDS,
   MAX_SIGNIFICANT_DIGITS,
   MIN_NON_ZERO_OPERAND_ABSOLUTE_VALUE,
+  requiresExactlyTwoOperands,
   type CalculatorOperation,
 } from './calculator.types'
 
@@ -25,7 +26,7 @@ export function isAllowedNumericInput(value: string): boolean {
 }
 
 export function supportsMultipleOperands(operation: CalculatorOperation): boolean {
-  return operation !== 'divide'
+  return !requiresExactlyTwoOperands(operation)
 }
 
 export function canAddOperand(operation: CalculatorOperation, operandCount: number): boolean {
@@ -40,11 +41,14 @@ export function validateCalculationInput(
     return { isValid: false, errorMessage: `You can add up to ${MAX_OPERANDS} operands.` }
   }
 
-  if (operation === 'divide' && rawOperands.length !== 2) {
-    return { isValid: false, errorMessage: 'Division requires exactly two operands.' }
+  if (requiresExactlyTwoOperands(operation) && rawOperands.length !== 2) {
+    return {
+      isValid: false,
+      errorMessage: `${operation === 'percentage' ? 'Percentage' : 'Division'} requires exactly two operands.`,
+    }
   }
 
-  if (operation !== 'divide' && rawOperands.length < 2) {
+  if (!requiresExactlyTwoOperands(operation) && rawOperands.length < 2) {
     return { isValid: false, errorMessage: 'This operation requires at least two operands.' }
   }
 

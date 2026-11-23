@@ -5,7 +5,7 @@ type MultiplicationStrategy struct{}
 
 func (MultiplicationStrategy) Execute(operands []float64) (float64, error) {
 	if len(operands) < 2 {
-		return 0, NewInvalidOperandCountError("multiply", "al menos 2 operandos")
+		return 0, NewInvalidOperandCountError("multiply", "at least 2 operands")
 	}
 
 	result := 1.0

@@ -39,6 +39,7 @@ func TestCalculateEndpoint(t *testing.T) {
 		wantAllow  string
 	}{
 		{name: "successful calculation", method: http.MethodPost, body: `{"operation":"multiply","operands":[2,3,4]}`, wantStatus: http.StatusOK, wantResult: float64Pointer(24)},
+		{name: "successful percentage calculation", method: http.MethodPost, body: `{"operation":"percentage","operands":[200,15]}`, wantStatus: http.StatusOK, wantResult: float64Pointer(30)},
 		{name: "invalid JSON", method: http.MethodPost, body: `{`, wantStatus: http.StatusBadRequest, wantCode: "invalid_json"},
 		{name: "unknown field", method: http.MethodPost, body: `{"operation":"add","operands":[2,3],"extra":true}`, wantStatus: http.StatusBadRequest, wantCode: "invalid_json"},
 		{name: "multiple JSON values", method: http.MethodPost, body: `{"operation":"add","operands":[2,3]} {}`, wantStatus: http.StatusBadRequest, wantCode: "invalid_json"},

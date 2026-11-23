@@ -5,7 +5,7 @@ type AdditionStrategy struct{}
 
 func (AdditionStrategy) Execute(operands []float64) (float64, error) {
 	if len(operands) < 2 {
-		return 0, NewInvalidOperandCountError("add", "al menos 2 operandos")
+		return 0, NewInvalidOperandCountError("add", "at least 2 operands")
 	}
 
 	var result float64

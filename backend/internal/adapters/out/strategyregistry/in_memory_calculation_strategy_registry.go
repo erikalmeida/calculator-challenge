@@ -11,10 +11,11 @@ type InMemoryCalculationStrategyRegistry struct {
 // NewInMemoryCalculationStrategyRegistry creates the registry required by the current take-home scope.
 func NewInMemoryCalculationStrategyRegistry() *InMemoryCalculationStrategyRegistry {
 	return &InMemoryCalculationStrategyRegistry{strategies: map[string]calculation.CalculationStrategy{
-		"add":      calculation.AdditionStrategy{},
-		"subtract": calculation.SubtractionStrategy{},
-		"multiply": calculation.MultiplicationStrategy{},
-		"divide":   calculation.DivisionStrategy{},
+		"add":        calculation.AdditionStrategy{},
+		"subtract":   calculation.SubtractionStrategy{},
+		"multiply":   calculation.MultiplicationStrategy{},
+		"divide":     calculation.DivisionStrategy{},
+		"percentage": calculation.PercentageStrategy{},
 	}}
 }
 

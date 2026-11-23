@@ -60,7 +60,8 @@ The form keeps operands as text while users edit them. `inputMode="decimal"` imp
 - A value may use digits, an optional leading minus sign, and one period decimal separator.
 - Thousands separators, decimal commas, exponent notation, letters, and currency symbols are not accepted.
 - A maximum of 20 operands can be added for addition, subtraction, and multiplication.
-- Division always uses exactly two operands.
+- Division and percentage always use exactly two operands.
+- Percentage uses `amount × percentage / 100`; for example, `200` and `15` return `30`.
 - Each field is limited to 17 characters, 10 decimal places, and 15 significant digits.
 - The accepted numeric range is zero or an absolute value from `0.0000000001` to `100000000000000`.
 

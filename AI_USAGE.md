@@ -48,7 +48,7 @@ The following decisions were explicitly reviewed and chosen for this project:
 
 - Go and React with TypeScript were selected to match the assignment.
 - Hexagonal architecture was selected by the user, with SOLID principles as a reference for the implementation.
-- The mandatory scope is addition, subtraction, multiplication, and division; advanced operations remain intentionally out of scope because they are optional.
+- The mandatory scope is addition, subtraction, multiplication, and division. Percentage was selected as the single optional operation because it fits the existing two-operand flow; exponentiation and square root remain out of scope.
 - The API is the source of truth for validation and calculation rules.
 - Input limits are 20 operands, a maximum absolute operand of `1e14`, up to 10 decimal places, and a 1 MiB request body.
 - `float64` is acceptable for this assignment, with its precision limitations documented in the README.

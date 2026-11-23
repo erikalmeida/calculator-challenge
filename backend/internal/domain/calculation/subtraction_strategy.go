@@ -5,7 +5,7 @@ type SubtractionStrategy struct{}
 
 func (SubtractionStrategy) Execute(operands []float64) (float64, error) {
 	if len(operands) < 2 {
-		return 0, NewInvalidOperandCountError("subtract", "al menos 2 operandos")
+		return 0, NewInvalidOperandCountError("subtract", "at least 2 operands")
 	}
 
 	result := operands[0]

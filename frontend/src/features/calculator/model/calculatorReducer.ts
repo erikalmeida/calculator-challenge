@@ -1,4 +1,4 @@
-import type { CalculatorAction, CalculatorState } from './calculator.types'
+import { requiresExactlyTwoOperands, type CalculatorAction, type CalculatorState } from './calculator.types'
 
 export const initialCalculatorState: CalculatorState = {
   operation: 'add',
@@ -15,15 +15,18 @@ export function calculatorReducer(
 ): CalculatorState {
   switch (action.type) {
     case 'operationChanged': {
-      const removesExtraOperands = action.operation === 'divide' && state.operands.length > 2
+      const requiresTwoOperands = requiresExactlyTwoOperands(action.operation)
+      const removesExtraOperands = requiresTwoOperands && state.operands.length > 2
       return {
         ...state,
         operation: action.operation,
-        operands: action.operation === 'divide' ? state.operands.slice(0, 2) : state.operands,
+        operands: requiresTwoOperands ? state.operands.slice(0, 2) : state.operands,
         status: 'idle',
         result: null,
         errorMessage: null,
-        noticeMessage: removesExtraOperands ? 'Division supports only two operands. Extra operands were removed.' : null,
+        noticeMessage: removesExtraOperands
+          ? `${action.operation === 'percentage' ? 'Percentage' : 'Division'} supports only two operands. Extra operands were removed.`
+          : null,
       }
     }
     case 'operandChanged': {

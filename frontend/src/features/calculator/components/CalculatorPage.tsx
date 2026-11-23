@@ -10,7 +10,7 @@ export function CalculatorPage() {
         <p className="calculator-eyebrow">Sezzle take-home</p>
         <h1 id="calculator-title">Calculator</h1>
         <p className="calculator-description">
-          Select an operation, enter the values, and calculate the result through the API.
+          Choose an operation, enter your numbers, and see the result.
         </p>
         <CalculatorForm
           onCalculate={calculator.calculate}

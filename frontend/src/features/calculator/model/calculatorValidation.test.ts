@@ -38,6 +38,14 @@ describe('calculatorValidation', () => {
     })
   })
 
+  it('requires exactly two operands for percentage', () => {
+    expect(validateCalculationInput('percentage', ['200', '15', '5'])).toEqual({
+      isValid: false,
+      errorMessage: 'Percentage requires exactly two operands.',
+    })
+    expect(supportsMultipleOperands('percentage')).toBe(false)
+  })
+
   it('rejects unsupported precision and values outside the numeric range', () => {
     expect(validateCalculationInput('add', ['0.00000000001', '2'])).toEqual({
       isValid: false,

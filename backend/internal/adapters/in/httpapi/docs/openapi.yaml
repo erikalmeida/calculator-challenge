@@ -115,13 +115,14 @@ components:
       properties:
         operation:
           type: string
-          enum: [add, subtract, multiply, divide]
+          enum: [add, subtract, multiply, divide, percentage]
         operands:
           type: array
           minItems: 2
           maxItems: 20
           description: |
-            Division requires exactly two operands. Other operations accept two to twenty operands.
+            Division and percentage require exactly two operands. Addition, subtraction, and multiplication accept two to twenty operands.
+            Percentage calculates amount * percentage / 100, where operands[0] is the amount and operands[1] is the percentage.
             Each value must be zero or have an absolute value from 0.0000000001 to 100000000000000,
             with at most 10 decimal places and 15 significant digits.
           items:
@@ -134,7 +135,7 @@ components:
       properties:
         operation:
           type: string
-          enum: [add, subtract, multiply, divide]
+          enum: [add, subtract, multiply, divide, percentage]
         operands:
           type: array
           items:

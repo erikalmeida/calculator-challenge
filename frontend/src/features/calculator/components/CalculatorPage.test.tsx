@@ -61,6 +61,31 @@ describe('CalculatorPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('The divisor cannot be zero.')
   })
 
+  it('submits percentage as amount and percentage operands', async () => {
+    const user = userEvent.setup()
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ operation: 'percentage', operands: [200, 15], result: 30 }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(<CalculatorPage />)
+    await user.selectOptions(screen.getByLabelText('Operation'), 'percentage')
+    await user.type(screen.getByLabelText('Operand 1'), '200')
+    await user.type(screen.getByLabelText('Operand 2'), '15')
+    await user.click(screen.getByRole('button', { name: 'Calculate' }))
+
+    expect(await screen.findByText(/Result:/)).toHaveTextContent('Result: 30')
+    expect(fetchMock).toHaveBeenCalledWith('/api/v1/calculate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ operation: 'percentage', operands: [200, 15] }),
+      signal: expect.any(AbortSignal),
+    })
+  })
+
   it('disables adding operands after reaching the maximum', async () => {
     const user = userEvent.setup()
     render(<CalculatorPage />)

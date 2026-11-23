@@ -16,6 +16,7 @@ func TestOperationStrategies(t *testing.T) {
 		{name: "subtract", strategy: SubtractionStrategy{}, operands: []float64{10, 3, 2}, want: 5},
 		{name: "multiply", strategy: MultiplicationStrategy{}, operands: []float64{2, 3, 4}, want: 24},
 		{name: "divide", strategy: DivisionStrategy{}, operands: []float64{8, 2}, want: 4},
+		{name: "percentage", strategy: PercentageStrategy{}, operands: []float64{200, 15}, want: 30},
 	}
 
 	for _, tt := range tests {
@@ -43,6 +44,7 @@ func TestOperationStrategyErrors(t *testing.T) {
 		{name: "multiply arity", strategy: MultiplicationStrategy{}, operands: []float64{1}, wantCode: ErrorCodeInvalidArity},
 		{name: "divide arity", strategy: DivisionStrategy{}, operands: []float64{8, 2, 1}, wantCode: ErrorCodeInvalidArity},
 		{name: "divide by zero", strategy: DivisionStrategy{}, operands: []float64{8, 0}, wantCode: ErrorCodeDivisionByZero},
+		{name: "percentage arity", strategy: PercentageStrategy{}, operands: []float64{200, 15, 5}, wantCode: ErrorCodeInvalidArity},
 	}
 
 	for _, tt := range tests {

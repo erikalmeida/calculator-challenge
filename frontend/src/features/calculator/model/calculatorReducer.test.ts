@@ -17,6 +17,20 @@ describe('calculatorReducer', () => {
     })
   })
 
+  it('warns and trims extra operands when switching to percentage', () => {
+    const state = {
+      ...initialCalculatorState,
+      operation: 'add' as const,
+      operands: ['200', '15', '5'],
+    }
+
+    expect(calculatorReducer(state, { type: 'operationChanged', operation: 'percentage' })).toMatchObject({
+      operation: 'percentage',
+      operands: ['200', '15'],
+      noticeMessage: 'Percentage supports only two operands. Extra operands were removed.',
+    })
+  })
+
   it('updates operands and resets calculator state transitions', () => {
     const changed = calculatorReducer(initialCalculatorState, {
       type: 'operandChanged',
