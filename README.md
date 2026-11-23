@@ -171,6 +171,7 @@ Backend, from `backend/`:
 go test ./...
 go test ./... -coverprofile=coverage.out
 go tool cover -func=coverage.out
+go tool cover -html=coverage.out -o coverage.html
 go vet ./...
 ```
 
@@ -184,6 +185,17 @@ npm run build
 ```
 
 `npm run build` is a release-quality check, not the command used to start the application during development.
+
+### Latest coverage snapshot
+
+The following results were generated from the current codebase. Regenerate them with the commands above after making changes.
+
+| Layer | Statements | Branches | Functions | Lines |
+| --- | ---: | ---: | ---: | ---: |
+| Go backend | 85.8% | N/A | N/A | N/A |
+| React frontend | 88.05% | 83.33% | 85.29% | 89.17% |
+
+Generated reports are available locally at `backend/coverage.html` and `frontend/coverage/index.html`. They are intentionally ignored by Git because they are reproducible build artifacts.
 
 ## AI usage
 
