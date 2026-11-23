@@ -1,0 +1,183 @@
+openapi: 3.1.0
+info:
+  title: Sezzle Calculator API
+  version: 1.0.0
+  description: |
+    A REST API that performs arithmetic calculations. Every response includes an X-Request-ID header.
+    The API accepts decimal JSON numbers with an optional leading minus sign and a period decimal separator.
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Check API availability
+      operationId: healthCheck
+      responses:
+        '200':
+          description: The API is available.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '405':
+          description: The endpoint only accepts GET.
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: GET
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/calculate:
+    post:
+      summary: Calculate an arithmetic operation
+      operationId: calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculationRequest'
+            examples:
+              multiplication:
+                value:
+                  operation: multiply
+                  operands: [2, 3, 4]
+      responses:
+        '200':
+          description: Calculation completed successfully.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '405':
+          description: The endpoint only accepts POST.
+          headers:
+            Allow:
+              schema:
+                type: string
+                example: POST
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: The request body exceeds 1 MiB.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '415':
+          description: Content-Type is not application/json.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/RequestID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  headers:
+    RequestID:
+      description: Generated identifier used to correlate the request with server logs.
+      schema:
+        type: string
+        example: 3e37c2fdd82a4b0d9f4ec9a3a58a1b0b
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+    CalculationRequest:
+      type: object
+      additionalProperties: false
+      required: [operation, operands]
+      properties:
+        operation:
+          type: string
+          enum: [add, subtract, multiply, divide]
+        operands:
+          type: array
+          minItems: 2
+          maxItems: 20
+          description: |
+            Division requires exactly two operands. Other operations accept two to twenty operands.
+            Each value must be zero or have an absolute value from 0.0000000001 to 100000000000000,
+            with at most 10 decimal places and 15 significant digits.
+          items:
+            type: number
+            minimum: -100000000000000
+            maximum: 100000000000000
+    CalculationResponse:
+      type: object
+      required: [operation, operands, result]
+      properties:
+        operation:
+          type: string
+          enum: [add, subtract, multiply, divide]
+        operands:
+          type: array
+          items:
+            type: number
+        result:
+          type: number
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum:
+                - invalid_json
+                - invalid_number_format
+                - validation_error
+                - unknown_operation
+                - invalid_arity
+                - division_by_zero
+                - too_many_operands
+                - operand_out_of_range
+                - request_too_large
+                - unsupported_media_type
+                - internal_error
+            message:
+              type: string
+  responses:
+    BadRequest:
+      description: The request is syntactically valid but violates the calculator contract.
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/RequestID'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            divisionByZero:
+              value:
+                error:
+                  code: division_by_zero
+                  message: The divisor cannot be zero.

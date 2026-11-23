@@ -1,0 +1,240 @@
+:root {
+  color: #1f2937;
+  background: #f6f7fb;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.calculator-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px;
+}
+
+.calculator-card {
+  width: min(100%, 620px);
+  padding: clamp(24px, 5vw, 40px);
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgb(15 23 42 / 10%);
+}
+
+.calculator-eyebrow {
+  margin: 0 0 8px;
+  color: #6d28d9;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  letter-spacing: -0.04em;
+}
+
+.calculator-description {
+  max-width: 52ch;
+  margin: 12px 0 28px;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+.calculator-form {
+  display: grid;
+  gap: 22px;
+}
+
+.form-field,
+.operand-list {
+  display: grid;
+  gap: 9px;
+}
+
+.form-label,
+.operand-list legend {
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.operation-select,
+.operand-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  color: #111827;
+  background: #ffffff;
+}
+
+.operation-select:focus-visible,
+.operand-input:focus-visible,
+.button:focus-visible {
+  outline: 3px solid rgb(124 58 237 / 35%);
+  outline-offset: 2px;
+}
+
+.operand-list {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.operand-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.operand-field {
+  display: grid;
+  gap: 7px;
+}
+
+.operand-label {
+  color: #374151;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+.button-primary {
+  color: #ffffff;
+  background: #6d28d9;
+}
+
+.button-primary:hover:not(:disabled) {
+  background: #5b21b6;
+}
+
+.button-secondary {
+  color: #4c1d95;
+  border-color: #c4b5fd;
+  background: #f5f3ff;
+}
+
+.button-tertiary {
+  min-height: 40px;
+  color: #b91c1c;
+  border-color: #fecaca;
+  background: #fffafa;
+}
+
+.button:disabled {
+  opacity: 0.55;
+}
+
+.operand-actions,
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-actions .button-primary {
+  flex: 1 1 180px;
+}
+
+.form-actions .button-secondary {
+  flex: 0 1 auto;
+}
+
+.form-hint {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.calculation-feedback {
+  min-height: 52px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  line-height: 1.45;
+}
+
+.calculation-feedback p {
+  margin: 0;
+}
+
+.calculation-feedback strong {
+  color: inherit;
+}
+
+.calculation-feedback-success {
+  color: #065f46;
+  background: #ecfdf5;
+}
+
+.calculation-feedback-error {
+  color: #991b1b;
+  background: #fef2f2;
+}
+
+.calculation-feedback-loading {
+  color: #1e40af;
+  background: #eff6ff;
+}
+
+@media (max-width: 480px) {
+  .calculator-page {
+    place-items: start center;
+    padding: 16px;
+  }
+
+  .calculator-card {
+    border-radius: 14px;
+  }
+
+  .operand-row {
+    grid-template-columns: 1fr;
+  }
+
+  .button-tertiary {
+    justify-self: start;
+  }
+
+  .form-actions .button-secondary {
+    flex: 1 1 auto;
+  }
+}

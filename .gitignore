@@ -1,0 +1,8 @@
+# Go build and coverage artifacts
+bin/
+coverage.out
+*.test
+
+# Local environment files
+.env
+.DS_Store
